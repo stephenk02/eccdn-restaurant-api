@@ -1,6 +1,7 @@
 package com.skoren.eccdn.restaurantapi.controller;
 
 import com.skoren.eccdn.restaurantapi.dto.response.ActiveDealResponse;
+import com.skoren.eccdn.restaurantapi.dto.response.PeakDealWindowResponse;
 import com.skoren.eccdn.restaurantapi.model.Deal;
 import com.skoren.eccdn.restaurantapi.service.DealService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,15 +32,8 @@ public class DealsController {
 
 
     @GetMapping("/deals/peak")
-    public List<Deal> getPeakDeals() {
-        List<Deal> list = new ArrayList<Deal>();
-        list.add(new Deal());
-        list.add(new Deal());
-        list.add(new Deal());
-        list.add(new Deal());
-        list.add(new Deal());
-        list.add(new Deal());
-        return list;
+    public PeakDealWindowResponse getPeakDeals() {
+        return DealService.getPeakDealWindow();
     }
 
 }
