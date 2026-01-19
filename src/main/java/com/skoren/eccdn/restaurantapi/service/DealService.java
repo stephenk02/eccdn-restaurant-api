@@ -18,7 +18,8 @@ public class DealService {
     public static ActiveDealResponse getActiveDeals (LocalTime time) {
 
         ChallengeData data = ChallengeDataMapper.LoadChallengeData();
-        HashMap<Restaurant, List<Deal>> activeMap = new HashMap<>();
+        List<Restaurant> restaurantList = new ArrayList<>();
+        List<Deal> dealList = new ArrayList<>();
 
         for (Restaurant restaurant : data.getRestaurants()) {
             // If restaurant is closed, deals are not active, so ignore it
@@ -29,14 +30,13 @@ public class DealService {
                 if (deal.getQtyLeft() <= 0) continue;
                 if (deal.getStart() != null && deal.getStart().isAfter(time)) continue;
                 if (deal.getEnd() != null && deal.getEnd().isBefore(time)) continue;
-                if (!activeMap.containsKey(restaurant)) {
-                    activeMap.put(restaurant, new ArrayList<>());
-                }
-                activeMap.get(restaurant).add(deal);
+
+                restaurantList.add(restaurant);
+                dealList.add(deal);
             }
         }
 
-        return new ActiveDealResponse(activeMap);
+        return new ActiveDealResponse(restaurantList, dealList);
     }
 
     private static class PeakWindowTimestamp {

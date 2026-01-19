@@ -11,31 +11,28 @@ import java.util.Map;
 
 
 public class ActiveDealResponse {
-    public ActiveDealResponse(HashMap<Restaurant, List<Deal>> dealMap) {
+
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mma");
+    public ActiveDealResponse(List<Restaurant> restaurantList, List<Deal> dealList) {
         this.deals = new ArrayList<ActiveDeal>();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mma");
+        for (int i = 0; i < restaurantList.size(); i++) {
+            Restaurant restaurant = restaurantList.get(i);
+            Deal deal = dealList.get(i);
 
-        for (Map.Entry<Restaurant, List<Deal>> record : dealMap.entrySet()) {
-            Restaurant restaurant = record.getKey();
-
-            List<Deal> foundDeals = record.getValue();
-
-            for (Deal deal : foundDeals) {
-                deals.add(new ActiveDeal(
-                        restaurant.getObjectId(),
-                        restaurant.getName(),
-                        restaurant.getAddress1(),
-                        restaurant.getSuburb(),
-                        restaurant.getOpen().format(formatter),
-                        restaurant.getClose().format(formatter),
-                        deal.getObjectId(),
-                        deal.getDiscount(),
-                        deal.getDineIn(),
-                        deal.getLightning(),
-                        deal.getQtyLeft()
-                ));
-            }
+            deals.add(new ActiveDeal(
+                    restaurant.getObjectId(),
+                    restaurant.getName(),
+                    restaurant.getAddress1(),
+                    restaurant.getSuburb(),
+                    restaurant.getOpen().format(formatter),
+                    restaurant.getClose().format(formatter),
+                    deal.getObjectId(),
+                    deal.getDiscount(),
+                    deal.getDineIn(),
+                    deal.getLightning(),
+                    deal.getQtyLeft()
+            ));
         }
     }
 
