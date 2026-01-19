@@ -2,25 +2,29 @@ package com.skoren.eccdn.restaurantapi.mapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jdk8.*;
 import com.skoren.eccdn.restaurantapi.model.ChallengeData;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.rmi.RemoteException;
 
 public class ChallengeDataMapper {
+    private static final String dataPath = "src/main/resources/static/challengeData.json";
 
-    public static void main(String[] args) throws IOException {
+    public static ChallengeData LoadChallengeData(){
         ObjectMapper mapper = JsonMapper.builder()
                 .addModule(new JavaTimeModule())
                 .build();
 
-        File challengeData = new File("src/main/resources/static/challengeData.json");
+        File fileData = new File(dataPath);
 
-        ChallengeData data = mapper.readValue(challengeData, ChallengeData.class);
+        try {
+            return mapper.readValue(fileData, ChallengeData.class);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

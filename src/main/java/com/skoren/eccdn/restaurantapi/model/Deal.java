@@ -1,10 +1,7 @@
 package com.skoren.eccdn.restaurantapi.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.cglib.core.Local;
-
 import java.time.LocalTime;
-import java.util.Optional;
 
 public class Deal {
     private String objectId;
@@ -41,6 +38,10 @@ public class Deal {
         this.dineIn = dineIn;
         this.lightning = lightning;
         this.qtyLeft = qtyLeft;
+
+        // Start and end are the same fields as open and close,
+        // We map them to each other, as incoming data is inconsistently labelled.
+        // In a real-world scenario, we would contact the data provider to notify them of this issue.
         this.start = startOrOpen;
         this.end = endOrClose;
         this.open = startOrOpen;
@@ -80,35 +81,39 @@ public class Deal {
     }
 
     public LocalTime getStart() {
-        return start;
+        return (start != null) ? start : open;
     }
 
     public void setStart(LocalTime start) {
         this.start = start;
+        this.open = start;
     }
 
     public LocalTime getEnd() {
-        return end;
+        return (end != null) ? end : close;
     }
 
     public void setEnd(LocalTime end) {
         this.end = end;
+        this.close = end;
     }
 
     public LocalTime getOpen() {
-        return open;
+        return (open != null) ? open : start;
     }
 
     public void setOpen(LocalTime open) {
         this.open = open;
+        this.start = open;
     }
 
     public LocalTime getClose() {
-        return close;
+        return (close != null) ? close : end;
     }
 
     public void setClose(LocalTime close) {
         this.close = close;
+        this.end = close;
     }
 
     public Integer getQtyLeft() {
